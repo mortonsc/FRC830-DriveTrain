@@ -1,4 +1,5 @@
 #include "WPILib.h"
+#include "Gamepad.h"
 
 class DriveRobot : public IterativeRobot {
 	
@@ -15,7 +16,7 @@ class DriveRobot : public IterativeRobot {
 	static const int AXIS_LEFT_Y = 4;
 	
 	RobotDrive * drive;
-	Joystick * joypad;
+	Gamepad * gamepad;
 	
 public:
 	DriveRobot() {
@@ -25,7 +26,7 @@ public:
 				new Victor(DRIVE_FRONT_LEFT),
 				new Victor (DRIVE_REAR_LEFT)
 				);
-		joypad = new Joystick(1);
+		gamepad = new Gamepad(1);
 	}
 	
 	void RobotInit(){
@@ -33,7 +34,7 @@ public:
 	}
 	
 	void DisabledInit(){
-		drive->TankDrive(0.0f, 0.0f);
+		drive->ArcadeDrive(0.0f, 0.0f);
 	}
 	
 	void AutonInit(){
@@ -45,7 +46,7 @@ public:
 	}
 	
 	void DisabledPeriodic(){
-		drive->TankDrive(0.0f, 0.0f);
+		drive->ArcadeDrive(0.0f, 0.0f);
 	}
 	
 	void AutonPeriodic(){
@@ -53,9 +54,12 @@ public:
 	}
 	
 	void TeleopPeriodic(){
-		drive->TankDrive(joypad->GetRawAxis(AXIS_LEFT_Y), joypad->GetRawAxis(AXIS_RIGHT_Y));
+		drive->ArcadeDrive(CurveAcceleration(gamepad->GetLeftY()), gamepad->GetRightX());
 	}
 	
+	float CurveAcceleration(float input){
+		return input; //TODO: add acceleration curving
+	}
 	
 };
 

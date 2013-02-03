@@ -2,7 +2,6 @@
 #include "Gamepad.h"
 #include "DriverStation.h"
 #include "Utility.h"
-#include "WPIStatus.h"
 
 /**
  * Construct an instance of a Gamepad.
@@ -81,7 +80,6 @@ float Gamepad::GetAxis(AxisType axis)
         case kRightXAxis: return GetRightX();
         case kRightYAxis: return GetRightY();
         default:
-            wpi_fatal(BadJoystickAxis);
             return 0.0;
     }
 }
