@@ -1,5 +1,6 @@
 #include "WPILib.h"
 #include "Gamepad.h"
+//#include <DriverStationLCD.h>
 
 class DriveRobot : public IterativeRobot {
 	
@@ -7,25 +8,22 @@ class DriveRobot : public IterativeRobot {
 	static const int DRIVE_RIGHT = 1;
 	static const int DRIVE_LEFT = 2;
 	
-	//Joypad axes:
-	static const int AXIS_RIGHT_X = 1;
-	static const int AXIS_RIGHT_Y = 2;
-	static const int AXIS_LEFT_X = 3;
-	static const int AXIS_LEFT_Y = 4;
-	
 	RobotDrive * drive;
 	Gamepad * gamepad;
-	
+	DriverStationLCD * lcd;
 public:
 	DriveRobot() {
+
+	}
+	
+	void RobotInit(){
 		drive = new RobotDrive(
 				new Victor(DRIVE_RIGHT),
 				new Victor(DRIVE_LEFT)
 				);
+		
 		gamepad = new Gamepad(1);
-	}
-	
-	void RobotInit(){
+		lcd = DriverStationLCD::GetInstance();
 		
 	}
 	
@@ -50,13 +48,18 @@ public:
 	}
 	
 	void TeleopPeriodic(){
-		drive->ArcadeDrive(CurveAcceleration(gamepad->GetLeftY()), gamepad->GetRightX());
+		float forwardSpeed = -gamepad->GetLeftY();
+		float sideSpeed = gamepad->GetRightX();
+		drive->ArcadeDrive(CurveAcceleration(forwardSpeed), sideSpeed);
+		lcd->PrintfLine(DriverStationLCD::kUser_Line1,"LEFT Y %f",forwardSpeed);
+		lcd->PrintfLine(DriverStationLCD::kUser_Line2,"RIGHT X %f",sideSpeed);
+	
+		lcd->UpdateLCD();	
 	}
 	
-	float CurveAcceleration(float input){
-		return input; //TODO: add acceleration curving
+	float CurveAcceleration(float input) {
+		return input;
 	}
-	
 };
 
 START_ROBOT_CLASS(DriveRobot);
