@@ -1,12 +1,11 @@
 #include "WPILib.h"
+#include "Gamepad.h"
 
 class DriveRobot : public IterativeRobot {
 	
 	//PWM channels:
-	static const int DRIVE_FRONT_RIGHT = 1;
-	static const int DRIVE_REAR_RIGHT = 2;
-	static const int DRIVE_FRONT_LEFT = 3;
-	static const int DRIVE_REAR_LEFT = 4;
+	static const int DRIVE_RIGHT = 1;
+	static const int DRIVE_LEFT = 2;
 	
 	//Joypad axes:
 	static const int AXIS_RIGHT_X = 1;
@@ -15,17 +14,15 @@ class DriveRobot : public IterativeRobot {
 	static const int AXIS_LEFT_Y = 4;
 	
 	RobotDrive * drive;
-	Joystick * joypad;
+	Gamepad * gamepad;
 	
 public:
 	DriveRobot() {
 		drive = new RobotDrive(
-				new Victor(DRIVE_FRONT_RIGHT),
-				new Victor(DRIVE_REAR_RIGHT),
-				new Victor(DRIVE_FRONT_LEFT),
-				new Victor (DRIVE_REAR_LEFT)
+				new Victor(DRIVE_RIGHT),
+				new Victor(DRIVE_LEFT)
 				);
-		joypad = new Joystick(1);
+		gamepad = new Gamepad(1);
 	}
 	
 	void RobotInit(){
@@ -33,7 +30,7 @@ public:
 	}
 	
 	void DisabledInit(){
-		drive->TankDrive(0.0f, 0.0f);
+		drive->ArcadeDrive(0.0f, 0.0f);
 	}
 	
 	void AutonInit(){
@@ -45,7 +42,7 @@ public:
 	}
 	
 	void DisabledPeriodic(){
-		drive->TankDrive(0.0f, 0.0f);
+		drive->ArcadeDrive(0.0f, 0.0f);
 	}
 	
 	void AutonPeriodic(){
@@ -53,9 +50,12 @@ public:
 	}
 	
 	void TeleopPeriodic(){
-		drive->TankDrive(joypad->GetRawAxis(AXIS_LEFT_Y), joypad->GetRawAxis(AXIS_RIGHT_Y));
+		drive->ArcadeDrive(CurveAcceleration(gamepad->GetLeftY()), gamepad->GetRightX());
 	}
 	
+	float CurveAcceleration(float input){
+		return input; //TODO: add acceleration curving
+	}
 	
 };
 

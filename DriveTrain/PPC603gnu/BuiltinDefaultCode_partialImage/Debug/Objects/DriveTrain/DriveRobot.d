@@ -376,7 +376,9 @@ BuiltinDefaultCode_partialImage/Debug/Objects/DriveTrain/DriveRobot.o:  \
   C:/WindRiver/vxworks-6.3/target/h/WPILib/Vision/Threshold.h \
   C:/WindRiver/vxworks-6.3/target/h/WPILib/Vision/HSLImage.h \
   C:/WindRiver/vxworks-6.3/target/h/WPILib/Vision/ColorImage.h \
-  C:/WindRiver/vxworks-6.3/target/h/WPILib/WPIErrors.h
+  C:/WindRiver/vxworks-6.3/target/h/WPILib/WPIErrors.h \
+  C:///FRC830-DriveTrain/DriveTrain/Gamepad.h \
+  C:/WindRiver/vxworks-6.3/target/h/WPILib/Joystick.h
 
 C:/WindRiver/vxworks-6.3/target/h/WPILib/WPILib.h:
 
@@ -1131,3 +1133,7 @@ C:/WindRiver/vxworks-6.3/target/h/WPILib/Vision/HSLImage.h:
 C:/WindRiver/vxworks-6.3/target/h/WPILib/Vision/ColorImage.h:
 
 C:/WindRiver/vxworks-6.3/target/h/WPILib/WPIErrors.h:
+
+C:///FRC830-DriveTrain/DriveTrain/Gamepad.h:
+
+C:/WindRiver/vxworks-6.3/target/h/WPILib/Joystick.h:
