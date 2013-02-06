@@ -1,6 +1,5 @@
 #include "WPILib.h"
 #include "Gamepad.h"
-//#include <DriverStationLCD.h>
 
 class DriveRobot : public IterativeRobot {
 	
@@ -11,6 +10,7 @@ class DriveRobot : public IterativeRobot {
 	RobotDrive * drive;
 	Gamepad * gamepad;
 	DriverStationLCD * lcd;
+	
 public:
 	DriveRobot() {
 
@@ -24,7 +24,6 @@ public:
 		
 		gamepad = new Gamepad(1);
 		lcd = DriverStationLCD::GetInstance();
-		
 	}
 	
 	void DisabledInit(){
@@ -51,8 +50,8 @@ public:
 		float forwardSpeed = -gamepad->GetLeftY();
 		float sideSpeed = gamepad->GetRightX();
 		drive->ArcadeDrive(CurveAcceleration(forwardSpeed), sideSpeed);
-		lcd->PrintfLine(DriverStationLCD::kUser_Line1,"LEFT Y %f",forwardSpeed);
-		lcd->PrintfLine(DriverStationLCD::kUser_Line2,"RIGHT X %f",sideSpeed);
+		lcd->PrintfLine(DriverStationLCD::kUser_Line1,"LEFT Y %f.2",forwardSpeed);
+		lcd->PrintfLine(DriverStationLCD::kUser_Line2,"RIGHT X %f.2",sideSpeed);
 	
 		lcd->UpdateLCD();	
 	}
@@ -62,4 +61,4 @@ public:
 	}
 };
 
-START_ROBOT_CLASS(DriveRobot);
+START_ROBOT_CLASS(DriveRobot)
