@@ -6,10 +6,13 @@ class DriveRobot : public IterativeRobot {
 	//PWM channels:
 	static const int DRIVE_RIGHT = 1;
 	static const int DRIVE_LEFT = 2;
-	
+
 	RobotDrive * drive;
 	Gamepad * gamepad;
 	DriverStationLCD * lcd;
+	
+	Victor * left_drive;
+	Victor * right_drive;
 	
 public:
 	DriveRobot() {
@@ -17,9 +20,12 @@ public:
 	}
 	
 	void RobotInit(){
+		left_drive = new Victor(DRIVE_LEFT);
+		right_drive = new Victor(DRIVE_RIGHT);
+		
 		drive = new RobotDrive(
-				new Victor(DRIVE_RIGHT),
-				new Victor(DRIVE_LEFT)
+				left_drive,
+				right_drive
 				);
 		
 		gamepad = new Gamepad(1);
@@ -43,20 +49,31 @@ public:
 	}
 	
 	void AutonPeriodic(){
-		
+		drive->ArcadeDrive(0.5f, 0.0f);
+		lcd->PrintfLine(DriverStationLCD::kUser_Line5, "Auton mode on");
+		lcd->UpdateLCD();
 	}
 	
 	void TeleopPeriodic(){
-		float forwardSpeed = -gamepad->GetLeftY();
+		float forwardSpeed = gamepad->GetLeftY();
 		float sideSpeed = gamepad->GetRightX();
 		drive->ArcadeDrive(CurveAcceleration(forwardSpeed), sideSpeed);
-		lcd->PrintfLine(DriverStationLCD::kUser_Line1,"LEFT Y %f.2",forwardSpeed);
+		lcd->PrintfLine(DriverStationLCD::kUser_Line1,"LEFT Y %f",forwardSpeed);
 		lcd->PrintfLine(DriverStationLCD::kUser_Line2,"RIGHT X %f.2",sideSpeed);
 	
 		lcd->UpdateLCD();	
+		
+		bool trigger = gamepad->GetNumberedButton(1);
+		if (trigger){
+			lcd->PrintfLine(DriverStationLCD::kUser_Line4, "trigger pressed");
+			right_drive->Set(0.5f);
+		}
+		else
+			lcd->PrintfLine(DriverStationLCD::kUser_Line4, "no trigger");		
 	}
 	
 	float CurveAcceleration(float input) {
+		//TODO: apparently we're going to do something here sometime
 		return input;
 	}
 };

@@ -76,9 +76,9 @@ float Gamepad::GetAxis(AxisType axis)
     switch(axis)
     {
         case kLeftXAxis: return GetLeftX();
-        case kLeftYAxis: return GetLeftY();
+        case kLeftYAxis: return -GetLeftY();
         case kRightXAxis: return GetRightX();
-        case kRightYAxis: return GetRightY();
+        case kRightYAxis: return -GetRightY();
         default:
             return 0.0;
     }
