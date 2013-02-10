@@ -59,17 +59,9 @@ public:
 		float sideSpeed = gamepad->GetRightX();
 		drive->ArcadeDrive(CurveAcceleration(forwardSpeed), sideSpeed);
 		lcd->PrintfLine(DriverStationLCD::kUser_Line1,"LEFT Y %f",forwardSpeed);
-		lcd->PrintfLine(DriverStationLCD::kUser_Line2,"RIGHT X %f.2",sideSpeed);
+		lcd->PrintfLine(DriverStationLCD::kUser_Line2,"RIGHT X %f",sideSpeed);
 	
-		lcd->UpdateLCD();	
-		
-		bool trigger = gamepad->GetNumberedButton(1);
-		if (trigger){
-			lcd->PrintfLine(DriverStationLCD::kUser_Line4, "trigger pressed");
-			right_drive->Set(0.5f);
-		}
-		else
-			lcd->PrintfLine(DriverStationLCD::kUser_Line4, "no trigger");		
+		lcd->UpdateLCD();		
 	}
 	
 	float CurveAcceleration(float input) {
