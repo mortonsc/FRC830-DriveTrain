@@ -11,14 +11,12 @@ class DriveRobot : public IterativeRobot {
 	static const int SHIFT_HIGH_BUTTON = 5;
 	static const int SHIFT_LOW_BUTTON = 7;
 	
-	static const int GEAR_SHIFT_RIGHT_CHANNEL = 1;
-	static const int GEAR_SHIFT_LEFT_CHANNEL = 2;
+	static const int GEAR_SHIFT_SOLENOID_CHANNEL = 1;
 	
-	static const bool HIGH_GEAR = true;
-	static const bool LOW_GEAR = false;
-			
-	Solenoid * right_gear_shift;
-	Solenoid * left_gear_shift;
+	static const bool HIGH_GEAR = false;
+	static const bool LOW_GEAR = true;
+
+	Solenoid * gear_shift;
 	
 	RobotDrive * drive;
 	Gamepad * gamepad;
@@ -41,8 +39,7 @@ public:
 				right_drive
 				);
 		
-		left_gear_shift = new Solenoid(GEAR_SHIFT_LEFT_CHANNEL);
-		right_gear_shift = new Solenoid(GEAR_SHIFT_RIGHT_CHANNEL);
+		gear_shift = new Solenoid(GEAR_SHIFT_SOLENOID_CHANNEL);
 		
 		gamepad = new Gamepad(1);
 		lcd = DriverStationLCD::GetInstance();
@@ -57,7 +54,6 @@ public:
 	}
 	
 	void TeleopInit(){
-		
 	}
 	
 	void DisabledPeriodic(){
@@ -76,21 +72,17 @@ public:
 		drive->ArcadeDrive(CurveAcceleration(forwardSpeed), sideSpeed);
 		
 		if (gamepad->GetNumberedButton(SHIFT_LOW_BUTTON)){
-			right_gear_shift->Set(LOW_GEAR);
-			left_gear_shift->Set(LOW_GEAR);
+			gear_shift->Set(LOW_GEAR);
 		} else if (gamepad->GetNumberedButton(SHIFT_HIGH_BUTTON)){
-			right_gear_shift->Set(HIGH_GEAR);
-			left_gear_shift->Set(HIGH_GEAR);
+			gear_shift->Set(HIGH_GEAR);
 		}
 		
 		lcd->PrintfLine(DriverStationLCD::kUser_Line1,"speed: %f",forwardSpeed);
 		lcd->PrintfLine(DriverStationLCD::kUser_Line2,"rotation: %f",sideSpeed);
 		
-		if (right_gear_shift->Get() != left_gear_shift->Get())
-			lcd->PrintfLine(DriverStationLCD::kUser_Line4, "gears mismatched");
-		else if (right_gear_shift->Get() == HIGH_GEAR)
+		if (gear_shift->Get() == HIGH_GEAR)
 			lcd->PrintfLine(DriverStationLCD::kUser_Line4, "in high gear");
-		else if (right_gear_shift->Get() == LOW_GEAR)
+		else if (gear_shift->Get() == LOW_GEAR)
 			lcd->PrintfLine(DriverStationLCD::kUser_Line4, "in low gear");
 
 		
