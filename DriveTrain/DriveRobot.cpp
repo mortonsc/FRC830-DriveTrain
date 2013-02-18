@@ -1,11 +1,19 @@
 #include "WPILib.h"
 #include "Gamepad.h"
+#include <cmath>
 
 class DriveRobot : public IterativeRobot {
 	
 	//PWM channels:
 	static const int DRIVE_RIGHT = 1;
 	static const int DRIVE_LEFT = 2;
+	static const int LIFT_TOP = 3;
+	static const int LIFT_MIDDLE = 4;
+	static const int LIFT_BOTTOM = 6;
+	
+	static const int ELEVATOR_TOP_DIRECTION = 1;
+	static const int ELEVATOR_MID_DIRECTION = 1;
+	static const int ELEVATOR_BOT_DIRECTION = 1;
 	
 	//buttons used to shift into high and low gear
 	static const int SHIFT_HIGH_BUTTON = 5;
@@ -15,6 +23,9 @@ class DriveRobot : public IterativeRobot {
 	
 	static const bool HIGH_GEAR = false;
 	static const bool LOW_GEAR = true;
+	
+
+	float elevatorSpeed;
 
 	Solenoid * gear_shift;
 	
@@ -24,6 +35,10 @@ class DriveRobot : public IterativeRobot {
 	
 	Victor * left_drive;
 	Victor * right_drive;
+	
+	Victor * liftTop;
+	Victor * liftMid;
+	Victor * liftBottom;
 	
 public:
 	DriveRobot() {
@@ -38,6 +53,12 @@ public:
 				left_drive,
 				right_drive
 				);
+		
+		liftTop = new Victor(LIFT_TOP);
+		liftMid = new Victor(LIFT_MIDDLE);
+		liftBottom = new Victor(LIFT_BOTTOM);
+		
+		elevatorSpeed = 0.0;
 		
 		gear_shift = new Solenoid(GEAR_SHIFT_SOLENOID_CHANNEL);
 		
@@ -62,14 +83,47 @@ public:
 	
 	void AutonPeriodic(){
 		drive->ArcadeDrive(0.5f, 0.0f);
-		lcd->PrintfLine(DriverStationLCD::kUser_Line5, "Auton mode on");
-		lcd->UpdateLCD();
 	}
 	
 	void TeleopPeriodic(){
-		float forwardSpeed = gamepad->GetLeftY();
-		float sideSpeed = gamepad->GetRightX();
-		drive->ArcadeDrive(CurveAcceleration(forwardSpeed), sideSpeed);
+		//float forwardSpeed = gamepad->GetLeftY();
+		//float sideSpeed = gamepad->GetRightX();
+		//drive->ArcadeDrive(CurveAcceleration(forwardSpeed), sideSpeed);
+		float leftSpeed = gamepad->GetLeftY();
+		float rightSpeed = gamepad->GetRightY();
+		if (leftSpeed > 1.0f)
+			leftSpeed = 1.0f;
+		if (leftSpeed < -1.0f)
+			leftSpeed = -1.0f;
+		if (rightSpeed > 1.0f)
+			rightSpeed = 1.0f;
+		if (rightSpeed < -1.0f)
+			rightSpeed = -1.0f;
+		lcd->PrintfLine(DriverStationLCD::kUser_Line5, "Teleop mode on");
+		lcd->UpdateLCD();
+		drive->TankDrive(leftSpeed, rightSpeed);
+		
+		int pressed = 0; 
+		pressed = gamepad->GetDPad();
+		if (elevatorSpeed <= 0.9 && pressed == Gamepad::kUp)// || pressed == Gamepad::kUpLeft || pressed == Gamepad::kUpRight)
+		{
+			elevatorSpeed += 0.01;
+		}
+		if (elevatorSpeed >= 0.1 &&pressed  == Gamepad::kDown)// || pressed == Gamepad::kDownLeft || pressed == Gamepad::kDownRight)
+		{
+			elevatorSpeed -= 0.01;
+		}
+		
+//		if (gamepad->GetDPad(LIFT_SPEED_UP)&& elevatorSpeed <= 0.9){
+//			elevatorSpeed += 0.1;
+//			
+//		}else if (gamepad->GetDPad(LIFT_SPEED_DOWN) && elevatorSpeed >= 0.1){
+//			elevatorSpeed -= 0.1;
+//		}
+		
+		liftTop->Set(elevatorSpeed*ELEVATOR_TOP_DIRECTION);
+		liftMid->Set(elevatorSpeed*ELEVATOR_MID_DIRECTION);
+		liftBottom->Set(elevatorSpeed*ELEVATOR_BOT_DIRECTION);		
 		
 		if (gamepad->GetNumberedButton(SHIFT_LOW_BUTTON)){
 			gear_shift->Set(LOW_GEAR);
@@ -77,13 +131,15 @@ public:
 			gear_shift->Set(HIGH_GEAR);
 		}
 		
-		lcd->PrintfLine(DriverStationLCD::kUser_Line1,"speed: %f",forwardSpeed);
-		lcd->PrintfLine(DriverStationLCD::kUser_Line2,"rotation: %f",sideSpeed);
+		lcd->PrintfLine(DriverStationLCD::kUser_Line1,"left: %f",leftSpeed);
+		lcd->PrintfLine(DriverStationLCD::kUser_Line2,"right: %f",rightSpeed);
 		
 		if (gear_shift->Get() == HIGH_GEAR)
 			lcd->PrintfLine(DriverStationLCD::kUser_Line4, "in high gear");
 		else if (gear_shift->Get() == LOW_GEAR)
 			lcd->PrintfLine(DriverStationLCD::kUser_Line4, "in low gear");
+		
+		lcd->PrintfLine(DriverStationLCD::kUser_Line3, "elevator at %f", elevatorSpeed);
 
 		
 		lcd->UpdateLCD();		
