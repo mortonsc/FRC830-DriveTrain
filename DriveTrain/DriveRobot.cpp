@@ -8,8 +8,13 @@ class DriveRobot : public IterativeRobot {
 	static const int DRIVE_RIGHT = 1;
 	static const int DRIVE_LEFT = 2;
 	static const int LIFT_TOP = 3;
-	static const int LIFT_MIDDLE = 4;
-	static const int LIFT_BOTTOM = 6;
+	static const int LIFT_BOTTOM = 4;
+	
+	static const int BUMP_UP_CHANNEL = 5;
+	static const int INTAKE_CHANNEL = 6;
+	
+	static const int BUMP_UP_DIRECTION = 1;
+	static const int INTAKE_DIRECTION = 1;
 	
 	static const int ENCODER_1_A_CHANNEL = 1;
 	static const int ENCODER_1_B_CHANNEL = 2;
@@ -17,9 +22,12 @@ class DriveRobot : public IterativeRobot {
 	static const int ENCODER_2_B_CHANNEL = 4;
 	
 	static const int ELEVATOR_TOP_DIRECTION = 1;
-	static const int ELEVATOR_MID_DIRECTION = 1;
 	static const int ELEVATOR_BOT_DIRECTION = 1;
 	
+	//These buttons control pick-up roller speed 
+	static const int ROLLER_SPEED_UP = 6;
+	static const int ROLLER_SPEED_DOWN = 8;
+
 	//buttons used to shift into high and low gear
 	static const int SHIFT_HIGH_BUTTON = 5;
 	static const int SHIFT_LOW_BUTTON = 7;
@@ -29,7 +37,7 @@ class DriveRobot : public IterativeRobot {
 	static const bool HIGH_GEAR = false;
 	static const bool LOW_GEAR = true;
 	
-
+	float rollerSpeed;
 	float elevatorSpeed;
 
 	Solenoid * gear_shift;
@@ -44,8 +52,10 @@ class DriveRobot : public IterativeRobot {
 	Victor * left_drive;
 	Victor * right_drive;
 	
+	Victor * bump_up;
+	Victor * intake;
+	
 	Victor * liftTop;
-	Victor * liftMid;
 	Victor * liftBottom;
 	
 public:
@@ -63,8 +73,12 @@ public:
 				);
 		
 		liftTop = new Victor(LIFT_TOP);
-		liftMid = new Victor(LIFT_MIDDLE);
 		liftBottom = new Victor(LIFT_BOTTOM);
+		
+		bump_up = new Victor(BUMP_UP_CHANNEL);
+		intake = new Victor(INTAKE_CHANNEL);
+		
+		rollerSpeed = 0.0;
 		
 		elevatorSpeed = 0.0;
 		
@@ -114,6 +128,15 @@ public:
 			rightSpeed = -1.0f;
 		drive->TankDrive(leftSpeed, rightSpeed);
 		
+		//The Fancy Roller Code	
+		if (rollerSpeed <= 0.99 && gamepad->GetNumberedButton(ROLLER_SPEED_UP)){
+			rollerSpeed += .01;
+		} else if (rollerSpeed >= .01 && gamepad->GetNumberedButton(ROLLER_SPEED_DOWN)){
+			rollerSpeed -= .01;
+		}
+		
+		bump_up->Set(rollerSpeed * BUMP_UP_DIRECTION);
+		intake->Set(rollerSpeed * INTAKE_DIRECTION);
 		
 		int pressed = 0; 
 		pressed = gamepad->GetDPad();
@@ -134,7 +157,6 @@ public:
 //		}
 		
 		liftTop->Set(elevatorSpeed*ELEVATOR_TOP_DIRECTION);
-		liftMid->Set(elevatorSpeed*ELEVATOR_MID_DIRECTION);
 		liftBottom->Set(elevatorSpeed*ELEVATOR_BOT_DIRECTION);		
 		
 		if (gamepad->GetNumberedButton(SHIFT_LOW_BUTTON)){
