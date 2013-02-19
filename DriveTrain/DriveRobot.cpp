@@ -72,7 +72,7 @@ public:
 		
 		encoder1 = new Encoder(ENCODER_1_A_CHANNEL, ENCODER_1_B_CHANNEL);
 		encoder2 = new Encoder(ENCODER_2_A_CHANNEL, ENCODER_2_B_CHANNEL);
-		
+
 		gamepad = new Gamepad(1);
 		lcd = DriverStationLCD::GetInstance();
 	}
@@ -86,6 +86,8 @@ public:
 	}
 	
 	void TeleopInit(){
+		encoder1->Start();
+		encoder2->Start();
 	}
 	
 	void DisabledPeriodic(){
@@ -151,11 +153,11 @@ public:
 		
 		lcd->PrintfLine(DriverStationLCD::kUser_Line3, "elevator at %f", elevatorSpeed);
 
-		int encoder_value1 = encoder1->GetRaw();
-		lcd->PrintfLine(DriverStationLCD::kUser_Line5, "encoder at %f", encoder_value1);
+		int encoder_value1 = encoder1->Get();
+		lcd->PrintfLine(DriverStationLCD::kUser_Line5, "encoder at %i", encoder_value1);
 		
-		int encoder_value2 = encoder2->GetRaw();
-		lcd->PrintfLine(DriverStationLCD::kUser_Line6, "encoder at %f", encoder_value2);
+		int encoder_value2 = encoder2->Get();
+		lcd->PrintfLine(DriverStationLCD::kUser_Line6, "encoder at %i", encoder_value2);
 		
 		lcd->UpdateLCD();		
 	}
