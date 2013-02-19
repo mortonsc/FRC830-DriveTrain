@@ -11,6 +11,11 @@ class DriveRobot : public IterativeRobot {
 	static const int LIFT_MIDDLE = 4;
 	static const int LIFT_BOTTOM = 6;
 	
+	static const int ENCODER_1_A_CHANNEL = 1;
+	static const int ENCODER_1_B_CHANNEL = 2;
+	static const int ENCODER_2_A_CHANNEL = 3;
+	static const int ENCODER_2_B_CHANNEL = 4;
+	
 	static const int ELEVATOR_TOP_DIRECTION = 1;
 	static const int ELEVATOR_MID_DIRECTION = 1;
 	static const int ELEVATOR_BOT_DIRECTION = 1;
@@ -28,6 +33,9 @@ class DriveRobot : public IterativeRobot {
 	float elevatorSpeed;
 
 	Solenoid * gear_shift;
+	
+	Encoder * encoder1;
+	Encoder * encoder2;
 	
 	RobotDrive * drive;
 	Gamepad * gamepad;
@@ -61,6 +69,9 @@ public:
 		elevatorSpeed = 0.0;
 		
 		gear_shift = new Solenoid(GEAR_SHIFT_SOLENOID_CHANNEL);
+		
+		encoder1 = new Encoder(ENCODER_1_A_CHANNEL, ENCODER_1_B_CHANNEL);
+		encoder2 = new Encoder(ENCODER_2_A_CHANNEL, ENCODER_2_B_CHANNEL);
 		
 		gamepad = new Gamepad(1);
 		lcd = DriverStationLCD::GetInstance();
@@ -99,9 +110,8 @@ public:
 			rightSpeed = 1.0f;
 		if (rightSpeed < -1.0f)
 			rightSpeed = -1.0f;
-		lcd->PrintfLine(DriverStationLCD::kUser_Line5, "Teleop mode on");
-		lcd->UpdateLCD();
 		drive->TankDrive(leftSpeed, rightSpeed);
+		
 		
 		int pressed = 0; 
 		pressed = gamepad->GetDPad();
@@ -141,6 +151,11 @@ public:
 		
 		lcd->PrintfLine(DriverStationLCD::kUser_Line3, "elevator at %f", elevatorSpeed);
 
+		int encoder_value1 = encoder1->GetRaw();
+		lcd->PrintfLine(DriverStationLCD::kUser_Line5, "encoder at %f", encoder_value1);
+		
+		int encoder_value2 = encoder2->GetRaw();
+		lcd->PrintfLine(DriverStationLCD::kUser_Line6, "encoder at %f", encoder_value2);
 		
 		lcd->UpdateLCD();		
 	}
