@@ -159,23 +159,26 @@ public:
 		//Gives the values to the victors:
 		drive->TankDrive(leftSpeed, rightSpeed);
 		
-		//The Fancy Roller Code	
+		//The Fancy Roller Code:
+		//Speeds & slows the rollers:
 		if (rollerSpeed <= 0.99 && gamepad->GetNumberedButton(ROLLER_SPEED_UP)){
 			rollerSpeed += .01;
 		} else if (rollerSpeed >= .01 && gamepad->GetNumberedButton(ROLLER_SPEED_DOWN)){
 			rollerSpeed -= .01;
 		}
 		
+		//Set the victors to the values
 		bump_up->Set(rollerSpeed * BUMP_UP_DIRECTION);
 		intake->Set(rollerSpeed * INTAKE_DIRECTION);
 		
+		//Speeds/slows the elevator based on the D-pad
 		int pressed = 0; 
 		pressed = gamepad->GetDPad();
-		if (elevatorSpeed <= 0.9 && pressed == Gamepad::kUp)// || pressed == Gamepad::kUpLeft || pressed == Gamepad::kUpRight)
+		if (elevatorSpeed <= 0.99 && pressed == Gamepad::kUp)// || pressed == Gamepad::kUpLeft || pressed == Gamepad::kUpRight)
 		{
 			elevatorSpeed += 0.01;
 		}
-		if (elevatorSpeed >= 0.1 &&pressed  == Gamepad::kDown)// || pressed == Gamepad::kDownLeft || pressed == Gamepad::kDownRight)
+		if (elevatorSpeed >= 0.01 &&pressed  == Gamepad::kDown)// || pressed == Gamepad::kDownLeft || pressed == Gamepad::kDownRight)
 		{
 			elevatorSpeed -= 0.01;
 		}
@@ -187,34 +190,42 @@ public:
 //			elevatorSpeed -= 0.1;
 //		}
 		
+		//Sets the elevator victors
 		liftTop->Set(elevatorSpeed*ELEVATOR_TOP_DIRECTION);
 		liftBottom->Set(elevatorSpeed*ELEVATOR_BOT_DIRECTION);		
 		
+		//Shifts them geers:
 		if (gamepad->GetNumberedButton(SHIFT_LOW_BUTTON)){
 			gear_shift->Set(LOW_GEAR);
 		} else if (gamepad->GetNumberedButton(SHIFT_HIGH_BUTTON)){
 			gear_shift->Set(HIGH_GEAR);
 		}
 		
+		//Displays speeds to Driver Station
 		lcd->PrintfLine(DriverStationLCD::kUser_Line1,"left: %f",leftSpeed);
 		lcd->PrintfLine(DriverStationLCD::kUser_Line2,"right: %f",rightSpeed);
 		
+		//Displays gears
 		if (gear_shift->Get() == HIGH_GEAR)
 			lcd->PrintfLine(DriverStationLCD::kUser_Line4, "in high gear");
 		else if (gear_shift->Get() == LOW_GEAR)
 			lcd->PrintfLine(DriverStationLCD::kUser_Line4, "in low gear");
 		
+		//Displays elevator speeds
 		lcd->PrintfLine(DriverStationLCD::kUser_Line3, "elevator at %f", elevatorSpeed);
 
+		//Displays encoder values
 		int encoder_value1 = encoder1->Get();
 		lcd->PrintfLine(DriverStationLCD::kUser_Line5, "encoder at %i", encoder_value1);
 		
 		int encoder_value2 = encoder2->Get();
 		lcd->PrintfLine(DriverStationLCD::kUser_Line6, "encoder at %i", encoder_value2);
 		
+		//Updates Driver Station
 		lcd->UpdateLCD();		
 	}
 	
+	//Later this will be PID-ish
 	float CurveAcceleration(float input) {
 		//TODO: apparently we're going to do something here sometime
 		return input;
