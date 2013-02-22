@@ -4,42 +4,52 @@
 
 class DriveRobot : public IterativeRobot {
 	
-	//PWM channels:
+	//Drive train PWM channels:
 	static const int DRIVE_RIGHT = 1;
 	static const int DRIVE_LEFT = 2;
+	
+	//Elevator motor PWM channels:
 	static const int LIFT_TOP = 3;
 	static const int LIFT_BOTTOM = 4;
 	
+	//Roller PWM channels:
 	static const int BUMP_UP_CHANNEL = 5;
 	static const int INTAKE_CHANNEL = 6;
 	
+	//These let us change the direction of the rollers (1 or -1):
 	static const int BUMP_UP_DIRECTION = 1;
 	static const int INTAKE_DIRECTION = 1;
 	
+	//Encoder channels (duh):
 	static const int ENCODER_1_A_CHANNEL = 1;
 	static const int ENCODER_1_B_CHANNEL = 2;
 	static const int ENCODER_2_A_CHANNEL = 3;
 	static const int ENCODER_2_B_CHANNEL = 4;
 	
+	//These let us change the direction of the elevator (1 or -1):
 	static const int ELEVATOR_TOP_DIRECTION = 1;
 	static const int ELEVATOR_BOT_DIRECTION = 1;
 	
-	//These buttons control pick-up roller speed 
+	//These buttons control pick-up roller speed: 
 	static const int ROLLER_SPEED_UP = 6;
 	static const int ROLLER_SPEED_DOWN = 8;
 
-	//buttons used to shift into high and low gear
+	//Buttons used to shift into high and low gear:
 	static const int SHIFT_HIGH_BUTTON = 5;
 	static const int SHIFT_LOW_BUTTON = 7;
 	
+	//Solenoid channel:
 	static const int GEAR_SHIFT_SOLENOID_CHANNEL = 1;
 	
+	//Changing gear states:
 	static const bool HIGH_GEAR = false;
 	static const bool LOW_GEAR = true;
 	
+	//Floats which are used for roller and elevator speeds:
 	float rollerSpeed;
 	float elevatorSpeed;
 
+	//These are creating objects for motors & such
 	Solenoid * gear_shift;
 	
 	Encoder * encoder1;
@@ -58,39 +68,53 @@ class DriveRobot : public IterativeRobot {
 	Victor * liftTop;
 	Victor * liftBottom;
 	
+	//Here we get to the REAL code
 public:
 	DriveRobot() {
 
 	}
 	
 	void RobotInit(){
+		//"Naming" refers to initializing (like giving a PWM port)
+		//Drive train motors are named
 		left_drive = new Victor(DRIVE_LEFT);
 		right_drive = new Victor(DRIVE_RIGHT);
 		
+		//I have no clue what this does (probably states what left & right are)
 		drive = new RobotDrive(
 				left_drive,
 				right_drive
 				);
 		
+		//Names lift victors
 		liftTop = new Victor(LIFT_TOP);
 		liftBottom = new Victor(LIFT_BOTTOM);
 		
+		//Names the rollers
 		bump_up = new Victor(BUMP_UP_CHANNEL);
 		intake = new Victor(INTAKE_CHANNEL);
 		
+		//Set the roller/elevator motors to 0 just in case
 		rollerSpeed = 0.0;
 		
 		elevatorSpeed = 0.0;
 		
+		//Names our fancy shifter
 		gear_shift = new Solenoid(GEAR_SHIFT_SOLENOID_CHANNEL);
 		
+		//Naes encoders
 		encoder1 = new Encoder(ENCODER_1_A_CHANNEL, ENCODER_1_B_CHANNEL);
 		encoder2 = new Encoder(ENCODER_2_A_CHANNEL, ENCODER_2_B_CHANNEL);
 
+		//Names the gamepad
 		gamepad = new Gamepad(1);
+		
+		//Names the Driver Station
 		lcd = DriverStationLCD::GetInstance();
 	}
+	//Steven wuzz heer
 	
+	//Stops driving in disabled
 	void DisabledInit(){
 		drive->ArcadeDrive(0.0f, 0.0f);
 	}
@@ -100,15 +124,18 @@ public:
 	}
 	
 	void TeleopInit(){
+		//Starts the encoders
 		encoder1->Start();
 		encoder2->Start();
 	}
 	
 	void DisabledPeriodic(){
+		//Constantly stops the drive (failsafe. Maybe.)
 		drive->ArcadeDrive(0.0f, 0.0f);
 	}
 	
 	void AutonPeriodic(){
+		//WE RIDE in autonomous mode (Cue horse hooves)
 		drive->ArcadeDrive(0.5f, 0.0f);
 	}
 	
@@ -116,8 +143,11 @@ public:
 		//float forwardSpeed = gamepad->GetLeftY();
 		//float sideSpeed = gamepad->GetRightX();
 		//drive->ArcadeDrive(CurveAcceleration(forwardSpeed), sideSpeed);
+		
+		//This code takes the joystick values:
 		float leftSpeed = gamepad->GetLeftY();
 		float rightSpeed = gamepad->GetRightY();
+		//This code limits the speed:
 		if (leftSpeed > 1.0f)
 			leftSpeed = 1.0f;
 		if (leftSpeed < -1.0f)
@@ -126,6 +156,7 @@ public:
 			rightSpeed = 1.0f;
 		if (rightSpeed < -1.0f)
 			rightSpeed = -1.0f;
+		//Gives the values to the victors:
 		drive->TankDrive(leftSpeed, rightSpeed);
 		
 		//The Fancy Roller Code	

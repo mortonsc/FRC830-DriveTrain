@@ -31,8 +31,8 @@ else
 MODE_DIR := NonDebug
 endif
 OBJ_DIR := .
-WS_ROOT_DIR := C:/
-PRJ_ROOT_DIR := $(WS_ROOT_DIR)//FRC830-DriveTrain/DriveTrain
+PRJ_ROOT_DIR := C:/FRC830-DriveTrain/DriveTrain
+WS_ROOT_DIR := C:/FRC830-DriveTrain
 
 
 
@@ -55,8 +55,6 @@ LIBS =
 IDE_INCLUDES = -I$(WIND_BASE)/target/h/WPILib -I$(WIND_BASE)/target/h -I$(WIND_BASE)/target/h/wrn/coreip 
 
 IDE_LIBRARIES = $(WIND_BASE)/target/lib/WPILib.a 
-
-IDE_DEFINES = 
 
 
 
@@ -103,7 +101,6 @@ BuiltinDefaultCode/$(MODE_DIR)/% : DEBUGFLAGS_Assembler = -O2 -fstrength-reduce 
 endif
 BuiltinDefaultCode/$(MODE_DIR)/% : IDE_INCLUDES = -I$(WIND_BASE)/target/h/WPILib -I$(WIND_BASE)/target/h -I$(WIND_BASE)/target/h/wrn/coreip 
 BuiltinDefaultCode/$(MODE_DIR)/% : IDE_LIBRARIES = $(WIND_BASE)/target/lib/WPILib.a 
-BuiltinDefaultCode/$(MODE_DIR)/% : IDE_DEFINES = 
 BuiltinDefaultCode/$(MODE_DIR)/% : PROJECT_TYPE = DKM
 BuiltinDefaultCode/$(MODE_DIR)/% : DEFINES = 
 BuiltinDefaultCode/$(MODE_DIR)/% : EXPAND_DBG = 0
@@ -148,7 +145,6 @@ BuiltinDefaultCode_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_Assembler = -O2 -fstr
 endif
 BuiltinDefaultCode_partialImage/$(MODE_DIR)/% : IDE_INCLUDES = -I$(WIND_BASE)/target/h/WPILib -I$(WIND_BASE)/target/h -I$(WIND_BASE)/target/h/wrn/coreip 
 BuiltinDefaultCode_partialImage/$(MODE_DIR)/% : IDE_LIBRARIES = $(WIND_BASE)/target/lib/WPILib.a 
-BuiltinDefaultCode_partialImage/$(MODE_DIR)/% : IDE_DEFINES = 
 BuiltinDefaultCode_partialImage/$(MODE_DIR)/% : PROJECT_TYPE = DKM
 BuiltinDefaultCode_partialImage/$(MODE_DIR)/% : DEFINES = 
 BuiltinDefaultCode_partialImage/$(MODE_DIR)/% : EXPAND_DBG = 0
@@ -162,11 +158,11 @@ BuiltinDefaultCode_partialImage/$(MODE_DIR)/% : LIBPATH =
 BuiltinDefaultCode_partialImage/$(MODE_DIR)/% : LIBS = 
 BuiltinDefaultCode_partialImage/$(MODE_DIR)/% : OBJ_DIR := BuiltinDefaultCode_partialImage/$(MODE_DIR)
 
-BuiltinDefaultCode_partialImage/$(MODE_DIR)/Objects/DriveTrain/DriveRobot.o : $(PRJ_ROOT_DIR)/DriveRobot.cpp $(FORCE_FILE_BUILD)
+BuiltinDefaultCode_partialImage/$(MODE_DIR)/Objects/DriveTrain/DriveRobot.o : C:/FRC830-DriveTrain/DriveTrain/DriveRobot.cpp
 	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@"; $(TOOL_PATH)ccppc $(DEBUGFLAGS_C++-Compiler) $(CC_ARCH_SPEC) -ansi -Wall  -MD -MP -mlongcall $(ADDED_C++FLAGS) $(IDE_INCLUDES) $(ADDED_INCLUDES) -DCPU=$(CPU) -DTOOL_FAMILY=$(TOOL_FAMILY) -DTOOL=$(TOOL) -D_WRS_KERNEL   $(DEFINES) -o "$@" -c "$<"
 
 
-BuiltinDefaultCode_partialImage/$(MODE_DIR)/Objects/DriveTrain/Gamepad.o : $(PRJ_ROOT_DIR)/Gamepad.cpp $(FORCE_FILE_BUILD)
+BuiltinDefaultCode_partialImage/$(MODE_DIR)/Objects/DriveTrain/Gamepad.o : C:/FRC830-DriveTrain/DriveTrain/Gamepad.cpp
 	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@"; $(TOOL_PATH)ccppc $(DEBUGFLAGS_C++-Compiler) $(CC_ARCH_SPEC) -ansi -Wall  -MD -MP -mlongcall $(ADDED_C++FLAGS) $(IDE_INCLUDES) $(ADDED_INCLUDES) -DCPU=$(CPU) -DTOOL_FAMILY=$(TOOL_FAMILY) -DTOOL=$(TOOL) -D_WRS_KERNEL   $(DEFINES) -o "$@" -c "$<"
 
 
@@ -182,8 +178,6 @@ _clean :: BuiltinDefaultCode_partialImage/$(MODE_DIR)/BuiltinDefaultCode_partial
 
 BuiltinDefaultCode_partialImage/$(MODE_DIR)/BuiltinDefaultCode_partialImage_clean : 
 	$(TRACE_FLAG)if [ -d "BuiltinDefaultCode_partialImage" ]; then cd "BuiltinDefaultCode_partialImage"; rm -rf $(MODE_DIR); fi
-
-force : 
 
 DEP_FILES := BuiltinDefaultCode_partialImage/$(MODE_DIR)/Objects/DriveTrain/DriveRobot.d BuiltinDefaultCode_partialImage/$(MODE_DIR)/Objects/DriveTrain/Gamepad.d
 -include $(DEP_FILES)
