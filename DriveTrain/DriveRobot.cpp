@@ -114,7 +114,7 @@ public:
 		//Names the Driver Station
 		lcd = DriverStationLCD::GetInstance();
 	}
-	//Steven wuzz heer
+	//Esteven wuzz heer
 	
 	//Stops driving in disabled
 	void DisabledInit(){
@@ -148,7 +148,7 @@ public:
 		
 		//This code takes the joystick values:
 		float leftSpeed = gamepad->GetLeftY();
-		float rightSpeed = gamepad->GetRightY();
+		float rightSpeed = -gamepad->GetRightY();
 		//This code limits the speed:
 		if (leftSpeed > 1.0f)
 			leftSpeed = 1.0f;
