@@ -5,24 +5,24 @@
 class DriveRobot : public IterativeRobot {
 	
 	//PWM channels:
-	static const int DRIVE_RIGHT = 1;
-	static const int DRIVE_LEFT = 2;
-	static const int LIFT_TOP = 3;
-	static const int LIFT_BOTTOM = 4;
+	static const int DRIVE_RIGHT = 10;
+	static const int DRIVE_LEFT = 1;
+	static const int LIFT_TOP = 2;
+	static const int LIFT_BOTTOM = 3;
 	
-	static const int BUMP_UP_CHANNEL = 5;
-	static const int INTAKE_CHANNEL = 6;
+	static const int BUMP_UP_CHANNEL = 7;
+	static const int INTAKE_CHANNEL = 9;
 	
 	static const int BUMP_UP_DIRECTION = 1;
 	static const int INTAKE_DIRECTION = 1;
 	
-	static const int ENCODER_1_A_CHANNEL = 1;
-	static const int ENCODER_1_B_CHANNEL = 2;
-	static const int ENCODER_2_A_CHANNEL = 3;
-	static const int ENCODER_2_B_CHANNEL = 4;
+	static const int DRIVE_LEFT_ENCODER_A_CHANNEL = 1;
+	static const int DRIVE_LEFT_ENCODER_B_CHANNEL = 2;
+	static const int DRIVE_RIGHT_ENCODER_A_CHANNEL = 3;
+	static const int DRIVE_RIGHT_ENCODER_B_CHANNEL = 4;
 	
 	static const int ELEVATOR_TOP_DIRECTION = 1;
-	static const int ELEVATOR_BOT_DIRECTION = 1;
+	static const int ELEVATOR_BOTTOM_DIRECTION = 1;
 	
 	//These buttons control pick-up roller speed 
 	static const int ROLLER_SPEED_UP = 6;
@@ -84,8 +84,8 @@ public:
 		
 		gear_shift = new Solenoid(GEAR_SHIFT_SOLENOID_CHANNEL);
 		
-		encoder1 = new Encoder(ENCODER_1_A_CHANNEL, ENCODER_1_B_CHANNEL);
-		encoder2 = new Encoder(ENCODER_2_A_CHANNEL, ENCODER_2_B_CHANNEL);
+		encoder1 = new Encoder(DRIVE_LEFT_ENCODER_A_CHANNEL, DRIVE_LEFT_ENCODER_B_CHANNEL);
+		encoder2 = new Encoder(DRIVE_RIGHT_ENCODER_A_CHANNEL, DRIVE_RIGHT_ENCODER_B_CHANNEL);
 
 		gamepad = new Gamepad(1);
 		lcd = DriverStationLCD::GetInstance();
@@ -138,26 +138,19 @@ public:
 		bump_up->Set(rollerSpeed * BUMP_UP_DIRECTION);
 		intake->Set(rollerSpeed * INTAKE_DIRECTION);
 		
-		int pressed = 0; 
-		pressed = gamepad->GetDPad();
-		if (elevatorSpeed <= 0.9 && pressed == Gamepad::kUp)// || pressed == Gamepad::kUpLeft || pressed == Gamepad::kUpRight)
+		Gamepad::DPadDirection dpad = gamepad->GetDPad();
+		if (elevatorSpeed <= 0.99 && dpad == Gamepad::kUp)// || pressed == Gamepad::kUpLeft || pressed == Gamepad::kUpRight)
 		{
 			elevatorSpeed += 0.01;
 		}
-		if (elevatorSpeed >= 0.1 &&pressed  == Gamepad::kDown)// || pressed == Gamepad::kDownLeft || pressed == Gamepad::kDownRight)
+		if (elevatorSpeed >= 0.01 && dpad  == Gamepad::kDown)// || pressed == Gamepad::kDownLeft || pressed == Gamepad::kDownRight)
 		{
 			elevatorSpeed -= 0.01;
 		}
-		
-//		if (gamepad->GetDPad(LIFT_SPEED_UP)&& elevatorSpeed <= 0.9){
-//			elevatorSpeed += 0.1;
-//			
-//		}else if (gamepad->GetDPad(LIFT_SPEED_DOWN) && elevatorSpeed >= 0.1){
-//			elevatorSpeed -= 0.1;
-//		}
+
 		
 		liftTop->Set(elevatorSpeed*ELEVATOR_TOP_DIRECTION);
-		liftBottom->Set(elevatorSpeed*ELEVATOR_BOT_DIRECTION);		
+		liftBottom->Set(elevatorSpeed*ELEVATOR_BOTTOM_DIRECTION);		
 		
 		if (gamepad->GetNumberedButton(SHIFT_LOW_BUTTON)){
 			gear_shift->Set(LOW_GEAR);
