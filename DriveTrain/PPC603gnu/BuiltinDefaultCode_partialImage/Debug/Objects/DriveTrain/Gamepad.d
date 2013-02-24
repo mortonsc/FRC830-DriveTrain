@@ -1,6 +1,6 @@
 BuiltinDefaultCode_partialImage/Debug/Objects/DriveTrain/Gamepad.o:  \
- C:///FRC830-DriveTrain/DriveTrain/Gamepad.cpp \
-  C:///FRC830-DriveTrain/DriveTrain/Gamepad.h \
+ C:/FRC830-DriveTrain/DriveTrain/Gamepad.cpp \
+  C:/FRC830-DriveTrain/DriveTrain/Gamepad.h \
   C:/WindRiver/vxworks-6.3/target/h/WPILib/Joystick.h \
   C:/WindRiver/vxworks-6.3/target/h/WPILib/GenericHID.h \
   C:/WindRiver/vxworks-6.3/target/h/vxWorks.h \
@@ -150,7 +150,7 @@ BuiltinDefaultCode_partialImage/Debug/Objects/DriveTrain/Gamepad.o:  \
   C:/WindRiver/vxworks-6.3/target/h/copyright_wrs.h \
   C:/WindRiver/vxworks-6.3/target/h/sys/taskDefs.h
 
-C:///FRC830-DriveTrain/DriveTrain/Gamepad.h:
+C:/FRC830-DriveTrain/DriveTrain/Gamepad.h:
 
 C:/WindRiver/vxworks-6.3/target/h/WPILib/Joystick.h:
 
