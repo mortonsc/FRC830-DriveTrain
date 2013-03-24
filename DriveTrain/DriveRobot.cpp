@@ -5,8 +5,8 @@
 class DriveRobot : public IterativeRobot {
 
 	//Drive train PWM channels:
-	static const int DRIVE_RIGHT = 1;
-	static const int DRIVE_LEFT = 2;
+	static const int DRIVE_RIGHT = 10;
+	static const int DRIVE_LEFT = 1;
 	
 	//Elevator motor PWM channels:
 	static const int LIFT_TOP = 3;
@@ -43,8 +43,8 @@ class DriveRobot : public IterativeRobot {
 	static const int GEAR_SHIFT_SOLENOID_CHANNEL = 1;
 	
 	//Changing gear states:
-	static const bool HIGH_GEAR = false;
-	static const bool LOW_GEAR = true;
+	static const bool HIGH_GEAR = true;
+	static const bool LOW_GEAR = false;
 	
 	//Floats which are used for roller and elevator speeds:
 	float rollerSpeed;
@@ -148,8 +148,9 @@ public:
 		
 		//This code takes the joystick values:
 		float leftSpeed = gamepad->GetLeftY();
-		float rightSpeed = -gamepad->GetRightY();
+		float rightSpeed = gamepad->GetRightY();
 		//This code limits the speed:
+		/*
 		if (leftSpeed > 1.0f)
 			leftSpeed = 1.0f;
 		if (leftSpeed < -1.0f)
@@ -158,6 +159,7 @@ public:
 			rightSpeed = 1.0f;
 		if (rightSpeed < -1.0f)
 			rightSpeed = -1.0f;
+			*/
 		//Gives the values to the victors:
 		drive->TankDrive(leftSpeed, rightSpeed);
 		

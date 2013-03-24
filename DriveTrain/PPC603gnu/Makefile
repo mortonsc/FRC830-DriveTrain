@@ -79,118 +79,118 @@ endif
 
 
 #Project Targets
-PROJECT_TARGETS = BuiltinDefaultCode/$(MODE_DIR)/BuiltinDefaultCode.out \
-	 BuiltinDefaultCode_partialImage/$(MODE_DIR)/BuiltinDefaultCode_partialImage.o
+PROJECT_TARGETS = DriveTrain/$(MODE_DIR)/DriveTrain.out \
+	 DriveTrain_partialImage/$(MODE_DIR)/DriveTrain_partialImage.o
 
 
 #Rules
 
-# BuiltinDefaultCode
+# DriveTrain
 ifeq ($(DEBUG_MODE),1)
-BuiltinDefaultCode/$(MODE_DIR)/% : DEBUGFLAGS_C-Compiler = -g
-BuiltinDefaultCode/$(MODE_DIR)/% : DEBUGFLAGS_C++-Compiler = -g
-BuiltinDefaultCode/$(MODE_DIR)/% : DEBUGFLAGS_Linker = -g
-BuiltinDefaultCode/$(MODE_DIR)/% : DEBUGFLAGS_Partial-Image-Linker = 
-BuiltinDefaultCode/$(MODE_DIR)/% : DEBUGFLAGS_Librarian = 
-BuiltinDefaultCode/$(MODE_DIR)/% : DEBUGFLAGS_Assembler = -g
+DriveTrain/$(MODE_DIR)/% : DEBUGFLAGS_C-Compiler = -g
+DriveTrain/$(MODE_DIR)/% : DEBUGFLAGS_C++-Compiler = -g
+DriveTrain/$(MODE_DIR)/% : DEBUGFLAGS_Linker = -g
+DriveTrain/$(MODE_DIR)/% : DEBUGFLAGS_Partial-Image-Linker = 
+DriveTrain/$(MODE_DIR)/% : DEBUGFLAGS_Librarian = 
+DriveTrain/$(MODE_DIR)/% : DEBUGFLAGS_Assembler = -g
 else
-BuiltinDefaultCode/$(MODE_DIR)/% : DEBUGFLAGS_C-Compiler = -O2 -fstrength-reduce -fno-builtin
-BuiltinDefaultCode/$(MODE_DIR)/% : DEBUGFLAGS_C++-Compiler = -O2 -fstrength-reduce -fno-builtin
-BuiltinDefaultCode/$(MODE_DIR)/% : DEBUGFLAGS_Linker = -O2 -fstrength-reduce -fno-builtin
-BuiltinDefaultCode/$(MODE_DIR)/% : DEBUGFLAGS_Partial-Image-Linker = 
-BuiltinDefaultCode/$(MODE_DIR)/% : DEBUGFLAGS_Librarian = 
-BuiltinDefaultCode/$(MODE_DIR)/% : DEBUGFLAGS_Assembler = -O2 -fstrength-reduce -fno-builtin
+DriveTrain/$(MODE_DIR)/% : DEBUGFLAGS_C-Compiler = -O2 -fstrength-reduce -fno-builtin
+DriveTrain/$(MODE_DIR)/% : DEBUGFLAGS_C++-Compiler = -O2 -fstrength-reduce -fno-builtin
+DriveTrain/$(MODE_DIR)/% : DEBUGFLAGS_Linker = -O2 -fstrength-reduce -fno-builtin
+DriveTrain/$(MODE_DIR)/% : DEBUGFLAGS_Partial-Image-Linker = 
+DriveTrain/$(MODE_DIR)/% : DEBUGFLAGS_Librarian = 
+DriveTrain/$(MODE_DIR)/% : DEBUGFLAGS_Assembler = -O2 -fstrength-reduce -fno-builtin
 endif
-BuiltinDefaultCode/$(MODE_DIR)/% : IDE_INCLUDES = -I$(WIND_BASE)/target/h/WPILib -I$(WIND_BASE)/target/h -I$(WIND_BASE)/target/h/wrn/coreip 
-BuiltinDefaultCode/$(MODE_DIR)/% : IDE_LIBRARIES = $(WIND_BASE)/target/lib/WPILib.a 
-BuiltinDefaultCode/$(MODE_DIR)/% : IDE_DEFINES = 
-BuiltinDefaultCode/$(MODE_DIR)/% : PROJECT_TYPE = DKM
-BuiltinDefaultCode/$(MODE_DIR)/% : DEFINES = 
-BuiltinDefaultCode/$(MODE_DIR)/% : EXPAND_DBG = 0
-BuiltinDefaultCode/$(MODE_DIR)/% : VX_CPU_FAMILY = ppc
-BuiltinDefaultCode/$(MODE_DIR)/% : CPU = PPC603
-BuiltinDefaultCode/$(MODE_DIR)/% : TOOL_FAMILY = gnu
-BuiltinDefaultCode/$(MODE_DIR)/% : TOOL = gnu
-BuiltinDefaultCode/$(MODE_DIR)/% : TOOL_PATH = 
-BuiltinDefaultCode/$(MODE_DIR)/% : CC_ARCH_SPEC = -mcpu=603 -mstrict-align -mno-implicit-fp -mlongcall
-BuiltinDefaultCode/$(MODE_DIR)/% : LIBPATH = 
-BuiltinDefaultCode/$(MODE_DIR)/% : LIBS = 
-BuiltinDefaultCode/$(MODE_DIR)/% : OBJ_DIR := BuiltinDefaultCode/$(MODE_DIR)
+DriveTrain/$(MODE_DIR)/% : IDE_INCLUDES = -I$(WIND_BASE)/target/h/WPILib -I$(WIND_BASE)/target/h -I$(WIND_BASE)/target/h/wrn/coreip 
+DriveTrain/$(MODE_DIR)/% : IDE_LIBRARIES = $(WIND_BASE)/target/lib/WPILib.a 
+DriveTrain/$(MODE_DIR)/% : IDE_DEFINES = 
+DriveTrain/$(MODE_DIR)/% : PROJECT_TYPE = DKM
+DriveTrain/$(MODE_DIR)/% : DEFINES = 
+DriveTrain/$(MODE_DIR)/% : EXPAND_DBG = 0
+DriveTrain/$(MODE_DIR)/% : VX_CPU_FAMILY = ppc
+DriveTrain/$(MODE_DIR)/% : CPU = PPC603
+DriveTrain/$(MODE_DIR)/% : TOOL_FAMILY = gnu
+DriveTrain/$(MODE_DIR)/% : TOOL = gnu
+DriveTrain/$(MODE_DIR)/% : TOOL_PATH = 
+DriveTrain/$(MODE_DIR)/% : CC_ARCH_SPEC = -mcpu=603 -mstrict-align -mno-implicit-fp -mlongcall
+DriveTrain/$(MODE_DIR)/% : LIBPATH = 
+DriveTrain/$(MODE_DIR)/% : LIBS = 
+DriveTrain/$(MODE_DIR)/% : OBJ_DIR := DriveTrain/$(MODE_DIR)
 
-OBJECTS_BuiltinDefaultCode = BuiltinDefaultCode_partialImage/$(MODE_DIR)/BuiltinDefaultCode_partialImage.o
+OBJECTS_DriveTrain = DriveTrain_partialImage/$(MODE_DIR)/DriveTrain_partialImage.o
 
-BuiltinDefaultCode/$(MODE_DIR)/BuiltinDefaultCode.out : $(OBJECTS_BuiltinDefaultCode)
-	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@";rm -f "$@";nmppc $(OBJECTS_BuiltinDefaultCode) $(IDE_LIBRARIES) | tclsh $(WIND_BASE)/host/resource/hutils/tcl/munch.tcl -c ppc > $(OBJ_DIR)/ctdt.c; $(TOOL_PATH)ccppc $(DEBUGFLAGS_Linker) $(CC_ARCH_SPEC) -fdollars-in-identifiers -Wall $(ADDED_CFLAGS) $(IDE_INCLUDES) $(ADDED_INCLUDES) -DCPU=$(CPU) -DTOOL_FAMILY=$(TOOL_FAMILY) -DTOOL=$(TOOL) -D_WRS_KERNEL   $(DEFINES)  -o $(OBJ_DIR)/ctdt.o -c $(OBJ_DIR)/ctdt.c; $(TOOL_PATH)ccppc -r -nostdlib -Wl,-X -T $(WIND_BASE)/target/h/tool/gnu/ldscripts/link.OUT -o "$@" $(OBJ_DIR)/ctdt.o $(OBJECTS_BuiltinDefaultCode) $(IDE_LIBRARIES) $(LIBPATH) $(LIBS)  $(ADDED_LIBPATH) $(ADDED_LIBS) && if [ "$(EXPAND_DBG)" = "1" ]; then plink "$@";fi
+DriveTrain/$(MODE_DIR)/DriveTrain.out : $(OBJECTS_DriveTrain)
+	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@";rm -f "$@";nmppc $(OBJECTS_DriveTrain) $(IDE_LIBRARIES) | tclsh $(WIND_BASE)/host/resource/hutils/tcl/munch.tcl -c ppc > $(OBJ_DIR)/ctdt.c; $(TOOL_PATH)ccppc $(DEBUGFLAGS_Linker) $(CC_ARCH_SPEC) -fdollars-in-identifiers -Wall $(ADDED_CFLAGS) $(IDE_INCLUDES) $(ADDED_INCLUDES) -DCPU=$(CPU) -DTOOL_FAMILY=$(TOOL_FAMILY) -DTOOL=$(TOOL) -D_WRS_KERNEL   $(DEFINES)  -o $(OBJ_DIR)/ctdt.o -c $(OBJ_DIR)/ctdt.c; $(TOOL_PATH)ccppc -r -nostdlib -Wl,-X -T $(WIND_BASE)/target/h/tool/gnu/ldscripts/link.OUT -o "$@" $(OBJ_DIR)/ctdt.o $(OBJECTS_DriveTrain) $(IDE_LIBRARIES) $(LIBPATH) $(LIBS)  $(ADDED_LIBPATH) $(ADDED_LIBS) && if [ "$(EXPAND_DBG)" = "1" ]; then plink "$@";fi
 
-BuiltinDefaultCode/$(MODE_DIR)/BuiltinDefaultCode_compile_file : $(FILE) ;
+DriveTrain/$(MODE_DIR)/DriveTrain_compile_file : $(FILE) ;
 
-_clean :: BuiltinDefaultCode/$(MODE_DIR)/BuiltinDefaultCode_clean
+_clean :: DriveTrain/$(MODE_DIR)/DriveTrain_clean
 
-BuiltinDefaultCode/$(MODE_DIR)/BuiltinDefaultCode_clean : 
-	$(TRACE_FLAG)if [ -d "BuiltinDefaultCode" ]; then cd "BuiltinDefaultCode"; rm -rf $(MODE_DIR); fi
+DriveTrain/$(MODE_DIR)/DriveTrain_clean : 
+	$(TRACE_FLAG)if [ -d "DriveTrain" ]; then cd "DriveTrain"; rm -rf $(MODE_DIR); fi
 
 
-# BuiltinDefaultCode_partialImage
+# DriveTrain_partialImage
 ifeq ($(DEBUG_MODE),1)
-BuiltinDefaultCode_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_C-Compiler = -g
-BuiltinDefaultCode_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_C++-Compiler = -g
-BuiltinDefaultCode_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_Linker = -g
-BuiltinDefaultCode_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_Partial-Image-Linker = 
-BuiltinDefaultCode_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_Librarian = 
-BuiltinDefaultCode_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_Assembler = -g
+DriveTrain_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_C-Compiler = -g
+DriveTrain_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_C++-Compiler = -g
+DriveTrain_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_Linker = -g
+DriveTrain_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_Partial-Image-Linker = 
+DriveTrain_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_Librarian = 
+DriveTrain_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_Assembler = -g
 else
-BuiltinDefaultCode_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_C-Compiler = -O2 -fstrength-reduce -fno-builtin
-BuiltinDefaultCode_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_C++-Compiler = -O2 -fstrength-reduce -fno-builtin
-BuiltinDefaultCode_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_Linker = -O2 -fstrength-reduce -fno-builtin
-BuiltinDefaultCode_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_Partial-Image-Linker = 
-BuiltinDefaultCode_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_Librarian = 
-BuiltinDefaultCode_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_Assembler = -O2 -fstrength-reduce -fno-builtin
+DriveTrain_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_C-Compiler = -O2 -fstrength-reduce -fno-builtin
+DriveTrain_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_C++-Compiler = -O2 -fstrength-reduce -fno-builtin
+DriveTrain_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_Linker = -O2 -fstrength-reduce -fno-builtin
+DriveTrain_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_Partial-Image-Linker = 
+DriveTrain_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_Librarian = 
+DriveTrain_partialImage/$(MODE_DIR)/% : DEBUGFLAGS_Assembler = -O2 -fstrength-reduce -fno-builtin
 endif
-BuiltinDefaultCode_partialImage/$(MODE_DIR)/% : IDE_INCLUDES = -I$(WIND_BASE)/target/h/WPILib -I$(WIND_BASE)/target/h -I$(WIND_BASE)/target/h/wrn/coreip 
-BuiltinDefaultCode_partialImage/$(MODE_DIR)/% : IDE_LIBRARIES = $(WIND_BASE)/target/lib/WPILib.a 
-BuiltinDefaultCode_partialImage/$(MODE_DIR)/% : IDE_DEFINES = 
-BuiltinDefaultCode_partialImage/$(MODE_DIR)/% : PROJECT_TYPE = DKM
-BuiltinDefaultCode_partialImage/$(MODE_DIR)/% : DEFINES = 
-BuiltinDefaultCode_partialImage/$(MODE_DIR)/% : EXPAND_DBG = 0
-BuiltinDefaultCode_partialImage/$(MODE_DIR)/% : VX_CPU_FAMILY = ppc
-BuiltinDefaultCode_partialImage/$(MODE_DIR)/% : CPU = PPC603
-BuiltinDefaultCode_partialImage/$(MODE_DIR)/% : TOOL_FAMILY = gnu
-BuiltinDefaultCode_partialImage/$(MODE_DIR)/% : TOOL = gnu
-BuiltinDefaultCode_partialImage/$(MODE_DIR)/% : TOOL_PATH = 
-BuiltinDefaultCode_partialImage/$(MODE_DIR)/% : CC_ARCH_SPEC = -mcpu=603 -mstrict-align -mno-implicit-fp -mlongcall
-BuiltinDefaultCode_partialImage/$(MODE_DIR)/% : LIBPATH = 
-BuiltinDefaultCode_partialImage/$(MODE_DIR)/% : LIBS = 
-BuiltinDefaultCode_partialImage/$(MODE_DIR)/% : OBJ_DIR := BuiltinDefaultCode_partialImage/$(MODE_DIR)
+DriveTrain_partialImage/$(MODE_DIR)/% : IDE_INCLUDES = -I$(WIND_BASE)/target/h/WPILib -I$(WIND_BASE)/target/h -I$(WIND_BASE)/target/h/wrn/coreip 
+DriveTrain_partialImage/$(MODE_DIR)/% : IDE_LIBRARIES = $(WIND_BASE)/target/lib/WPILib.a 
+DriveTrain_partialImage/$(MODE_DIR)/% : IDE_DEFINES = 
+DriveTrain_partialImage/$(MODE_DIR)/% : PROJECT_TYPE = DKM
+DriveTrain_partialImage/$(MODE_DIR)/% : DEFINES = 
+DriveTrain_partialImage/$(MODE_DIR)/% : EXPAND_DBG = 0
+DriveTrain_partialImage/$(MODE_DIR)/% : VX_CPU_FAMILY = ppc
+DriveTrain_partialImage/$(MODE_DIR)/% : CPU = PPC603
+DriveTrain_partialImage/$(MODE_DIR)/% : TOOL_FAMILY = gnu
+DriveTrain_partialImage/$(MODE_DIR)/% : TOOL = gnu
+DriveTrain_partialImage/$(MODE_DIR)/% : TOOL_PATH = 
+DriveTrain_partialImage/$(MODE_DIR)/% : CC_ARCH_SPEC = -mcpu=603 -mstrict-align -mno-implicit-fp -mlongcall
+DriveTrain_partialImage/$(MODE_DIR)/% : LIBPATH = 
+DriveTrain_partialImage/$(MODE_DIR)/% : LIBS = 
+DriveTrain_partialImage/$(MODE_DIR)/% : OBJ_DIR := DriveTrain_partialImage/$(MODE_DIR)
 
-BuiltinDefaultCode_partialImage/$(MODE_DIR)/Objects/DriveTrain/DriveEncoder.o : $(PRJ_ROOT_DIR)/DriveEncoder.cpp $(FORCE_FILE_BUILD)
+DriveTrain_partialImage/$(MODE_DIR)/Objects/DriveTrain/DriveEncoder.o : $(PRJ_ROOT_DIR)/DriveEncoder.cpp $(FORCE_FILE_BUILD)
 	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@"; $(TOOL_PATH)ccppc $(DEBUGFLAGS_C++-Compiler) $(CC_ARCH_SPEC) -ansi -Wall  -MD -MP -mlongcall $(ADDED_C++FLAGS) $(IDE_INCLUDES) $(ADDED_INCLUDES) -DCPU=$(CPU) -DTOOL_FAMILY=$(TOOL_FAMILY) -DTOOL=$(TOOL) -D_WRS_KERNEL   $(DEFINES) -o "$@" -c "$<"
 
 
-BuiltinDefaultCode_partialImage/$(MODE_DIR)/Objects/DriveTrain/DriveRobot.o : $(PRJ_ROOT_DIR)/DriveRobot.cpp $(FORCE_FILE_BUILD)
+DriveTrain_partialImage/$(MODE_DIR)/Objects/DriveTrain/DriveRobot.o : $(PRJ_ROOT_DIR)/DriveRobot.cpp $(FORCE_FILE_BUILD)
 	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@"; $(TOOL_PATH)ccppc $(DEBUGFLAGS_C++-Compiler) $(CC_ARCH_SPEC) -ansi -Wall  -MD -MP -mlongcall $(ADDED_C++FLAGS) $(IDE_INCLUDES) $(ADDED_INCLUDES) -DCPU=$(CPU) -DTOOL_FAMILY=$(TOOL_FAMILY) -DTOOL=$(TOOL) -D_WRS_KERNEL   $(DEFINES) -o "$@" -c "$<"
 
 
-BuiltinDefaultCode_partialImage/$(MODE_DIR)/Objects/DriveTrain/Gamepad.o : $(PRJ_ROOT_DIR)/Gamepad.cpp $(FORCE_FILE_BUILD)
+DriveTrain_partialImage/$(MODE_DIR)/Objects/DriveTrain/Gamepad.o : $(PRJ_ROOT_DIR)/Gamepad.cpp $(FORCE_FILE_BUILD)
 	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@"; $(TOOL_PATH)ccppc $(DEBUGFLAGS_C++-Compiler) $(CC_ARCH_SPEC) -ansi -Wall  -MD -MP -mlongcall $(ADDED_C++FLAGS) $(IDE_INCLUDES) $(ADDED_INCLUDES) -DCPU=$(CPU) -DTOOL_FAMILY=$(TOOL_FAMILY) -DTOOL=$(TOOL) -D_WRS_KERNEL   $(DEFINES) -o "$@" -c "$<"
 
 
-OBJECTS_BuiltinDefaultCode_partialImage = BuiltinDefaultCode_partialImage/$(MODE_DIR)/Objects/DriveTrain/DriveEncoder.o \
-	 BuiltinDefaultCode_partialImage/$(MODE_DIR)/Objects/DriveTrain/DriveRobot.o \
-	 BuiltinDefaultCode_partialImage/$(MODE_DIR)/Objects/DriveTrain/Gamepad.o
+OBJECTS_DriveTrain_partialImage = DriveTrain_partialImage/$(MODE_DIR)/Objects/DriveTrain/DriveEncoder.o \
+	 DriveTrain_partialImage/$(MODE_DIR)/Objects/DriveTrain/DriveRobot.o \
+	 DriveTrain_partialImage/$(MODE_DIR)/Objects/DriveTrain/Gamepad.o
 
-BuiltinDefaultCode_partialImage/$(MODE_DIR)/BuiltinDefaultCode_partialImage.o : $(OBJECTS_BuiltinDefaultCode_partialImage)
-	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@"; $(TOOL_PATH)ccppc -r -nostdlib -Wl,-X  -o "$@" $(OBJECTS_BuiltinDefaultCode_partialImage) $(LIBPATH) $(LIBS) $(ADDED_LIBPATH) $(ADDED_LIBS)  && if [ "$(EXPAND_DBG)" = "1" ]; then plink "$@";fi
+DriveTrain_partialImage/$(MODE_DIR)/DriveTrain_partialImage.o : $(OBJECTS_DriveTrain_partialImage)
+	$(TRACE_FLAG)if [ ! -d "`dirname "$@"`" ]; then mkdir -p "`dirname "$@"`"; fi;echo "building $@"; $(TOOL_PATH)ccppc -r -nostdlib -Wl,-X  -o "$@" $(OBJECTS_DriveTrain_partialImage) $(LIBPATH) $(LIBS) $(ADDED_LIBPATH) $(ADDED_LIBS)  && if [ "$(EXPAND_DBG)" = "1" ]; then plink "$@";fi
 
-BuiltinDefaultCode_partialImage/$(MODE_DIR)/BuiltinDefaultCode_partialImage_compile_file : $(FILE) ;
+DriveTrain_partialImage/$(MODE_DIR)/DriveTrain_partialImage_compile_file : $(FILE) ;
 
-_clean :: BuiltinDefaultCode_partialImage/$(MODE_DIR)/BuiltinDefaultCode_partialImage_clean
+_clean :: DriveTrain_partialImage/$(MODE_DIR)/DriveTrain_partialImage_clean
 
-BuiltinDefaultCode_partialImage/$(MODE_DIR)/BuiltinDefaultCode_partialImage_clean : 
-	$(TRACE_FLAG)if [ -d "BuiltinDefaultCode_partialImage" ]; then cd "BuiltinDefaultCode_partialImage"; rm -rf $(MODE_DIR); fi
+DriveTrain_partialImage/$(MODE_DIR)/DriveTrain_partialImage_clean : 
+	$(TRACE_FLAG)if [ -d "DriveTrain_partialImage" ]; then cd "DriveTrain_partialImage"; rm -rf $(MODE_DIR); fi
 
 force : 
 
-DEP_FILES := BuiltinDefaultCode_partialImage/$(MODE_DIR)/Objects/DriveTrain/DriveEncoder.d BuiltinDefaultCode_partialImage/$(MODE_DIR)/Objects/DriveTrain/DriveRobot.d BuiltinDefaultCode_partialImage/$(MODE_DIR)/Objects/DriveTrain/Gamepad.d
+DEP_FILES := DriveTrain_partialImage/$(MODE_DIR)/Objects/DriveTrain/DriveEncoder.d DriveTrain_partialImage/$(MODE_DIR)/Objects/DriveTrain/DriveRobot.d DriveTrain_partialImage/$(MODE_DIR)/Objects/DriveTrain/Gamepad.d
 -include $(DEP_FILES)
 
 

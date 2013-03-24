@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <wrxml>
-    <properties platform="VxWorks" platform_name="vxworks-6.3" root="1" type="DownloadableKernelModuleProject"/>
+    <properties platform="VxWorks" platform_name="vxworks-6.3" root="0" type="DownloadableKernelModuleProject"/>
     <attributes>
         <mapAttribute>
             <listAttribute key="BLD::Info|GlobalMacros">
@@ -240,12 +240,12 @@
         </mapAttribute>
     </attributes>
     <buildtargets>
-        <buildtarget buildtool="Linker" name="BuiltinDefaultCode" passed="false" targetname="BuiltinDefaultCode">
+        <buildtarget buildtool="Linker" name="DriveTrain" passed="false" targetname="DriveTrain">
             <contents>
-                <buildtargetreference name="/DriveTrain/BuiltinDefaultCode_partialImage"/>
+                <buildtargetreference name="/DriveTrain/DriveTrain_partialImage"/>
             </contents>
         </buildtarget>
-        <buildtarget buildtool="Partial Image Linker" name="BuiltinDefaultCode_partialImage" passed="true" targetname="BuiltinDefaultCode_partialImage">
+        <buildtarget buildtool="Partial Image Linker" name="DriveTrain_partialImage" passed="true" targetname="DriveTrain_partialImage">
             <contents>
                 <folder name="/DriveTrain" recursive="true"/>
             </contents>
